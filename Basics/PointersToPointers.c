@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void allocateMemory(int **ptr, size_t size) {
+void allocateMemory(int **ptr, int size) {
   *ptr = (malloc(size * sizeof(int)));
 }
 int main() {

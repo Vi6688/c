@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-num sumOfArray(const num* a,const size_t size)
+num sumOfArray(const num* a,const int size)
 {
   num sum = 0;
   for (int i = 0;i<size; i++) {
@@ -12,7 +12,7 @@ num sumOfArray(const num* a,const size_t size)
   return sum;
 }
 int main() {
-  size_t size =  10;
+  int size =  10;
   num array[size];
   loopI(size)
   {
