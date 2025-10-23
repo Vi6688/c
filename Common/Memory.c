@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 void **pointersToFree = NULL; // dynamic array of pointers
-int pointersToFreeCount = 0;
-int pointersToFreeCapacity = 0;
+long long int pointersToFreeCount = 0;
+long long int pointersToFreeCapacity = 0;
 
 int findIndexOfAllocatedPtr(void *ptr) {
   loopI(pointersToFreeCount) {
@@ -31,33 +31,11 @@ void ensureCapacity() {
     pointersToFreeCapacity = newCapacity;
   }
 }
-
-IntVector newInt(const int size) {
-  void *ptr = malloc(size * sizeof(int));
-  ensureCapacity();
-  pointersToFree[pointersToFreeCount++] = ptr;
-  return (IntVector)(ptr);
-}
-
-String newChar(const int size) {
+string newChar(const int size) {
   void *ptr = malloc(size * sizeof(char));
   ensureCapacity();
   pointersToFree[pointersToFreeCount++] = ptr;
-  return (String)(ptr);
-}
-
-NumVector newNum(const int size) {
-  void *ptr = malloc(size * sizeof(double));
-  ensureCapacity();
-  pointersToFree[pointersToFreeCount++] = ptr;
-  return (NumVector)(ptr);
-}
-
-FloatVector newFloat(const int size) {
-  void *ptr = malloc(size * sizeof(float));
-  ensureCapacity();
-  pointersToFree[pointersToFreeCount++] = ptr;
-  return (FloatVector)(ptr);
+  return (string)(ptr);
 }
 
 void *newAlloc(const size_t size) {
@@ -82,8 +60,8 @@ void *newReAlloc(void *ptr, const size_t size) {
   return newPtr;
 }
 
-__attribute__((destructor)) void destruct() {
-  printf("calling destructor for freeing pointers. Total pointers count = %d", pointersToFreeCount);
+void destruct() {
+  printf("Freeing allocated pointers. Total pointers freed = %d", pointersToFreeCount);
   for (int i = 0; i < pointersToFreeCount; i++) {
     free(pointersToFree[i]);
   }

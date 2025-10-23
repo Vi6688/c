@@ -6,12 +6,12 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(Common)
-add_executable(test Main.c)
-target_link_libraries(test PRIVATE commonlib)
+add_executable(Main Main.c)
+target_link_libraries(Main PRIVATE commonlib)
 
 # Optional warnings
 if (MSVC)
-    target_compile_options(test PRIVATE /W4)
+    target_compile_options(Main PRIVATE /W4)
 else()
-    target_compile_options(test PRIVATE -Wall -Wextra -pedantic)
+    target_compile_options(Main PRIVATE -Wall -Wextra -pedantic)
 endif()

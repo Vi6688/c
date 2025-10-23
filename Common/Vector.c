@@ -1,53 +1,75 @@
-#include "Vector.h"
-#include "Memory.h"
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Memory.h"
 
+/* -------- Type Enum -------- */
+typedef enum {
+    TYPE_INT,
+    TYPE_DOUBLE,
+    TYPE_STRING
+} ValueType;
 
-/* -------- IntList -------- */
-static int intDataAt(IntList *list, int idx) {
-  return ((int *)list->list.data)[idx];
+/* -------- Union for data -------- */
+typedef union {
+    int i;
+    double d;
+    char *s;
+} ValueData;
+
+/* -------- Vector element -------- */
+typedef struct {
+    ValueType type;
+    ValueData data;
+} VectorElement;
+
+/* -------- Vector -------- */
+typedef struct {
+    VectorElement *data;
+    size_t size;
+    size_t capacity;
+} Vector;
+
+/* -------- Vector functions -------- */
+Vector *createVector(void) {
+    Vector *v = newAlloc(sizeof(Vector));
+    v->size = 0;
+    v->capacity = 4;
+    v->data = newAlloc(v->capacity * sizeof(VectorElement));
+    return v;
 }
 
-IntList *createIntList(void) {
-  IntList *l = newAlloc(sizeof(IntList));
-  l->dataAt = intDataAt;
-  createList(&l->list, sizeof(int));
-  return l;
+static void resizeVector(Vector *v) {
+    v->capacity *= 2;
+    v->data = newReAlloc(v->data, v->capacity * sizeof(VectorElement));
 }
 
-void appendInt(IntList *list, int val) { appendList(&list->list, &val); }
-
-/* -------- DoubleList -------- */
-static double doubleDataAt(DoubleList *list, int idx) {
-  return ((double *)list->list.data)[idx];
+void appendInt(Vector *v, int val) {
+    if (v->size >= v->capacity) resizeVector(v);
+    v->data[v->size].type = TYPE_INT;
+    v->data[v->size].data.i = val;
+    v->size++;
 }
 
-DoubleList *createDoubleList(void) {
-  DoubleList *l = newAlloc(sizeof(DoubleList));
-  l->dataAt = doubleDataAt;
-  createList(&l->list, sizeof(double));
-  return l;
+void appendDouble(Vector *v, double val) {
+    if (v->size >= v->capacity) resizeVector(v);
+    v->data[v->size].type = TYPE_DOUBLE;
+    v->data[v->size].data.d = val;
+    v->size++;
 }
 
-void appendDouble(DoubleList *list, double val) {
-  appendList(&list->list, &val);
+void appendString(Vector *v, const char *val) {
+    if (v->size >= v->capacity) resizeVector(v);
+    v->data[v->size].type = TYPE_STRING;
+    v->data[v->size].data.s = strdup(val);
+    v->size++;
 }
 
-/* -------- StringList -------- */
-static char *stringDataAt(StringList *list, int idx) {
-  return ((char **)list->list.data)[idx];
-}
-
-StringList *createStringList(void) {
-  StringList *l = newAlloc(sizeof(StringList));
-  l->dataAt = stringDataAt;
-  createList(&l->list, sizeof(char *));
-  return l;
-}
-
-void appendString(StringList *list, const char *val) {
-  char *copy = strdup(val);
-  appendList(&list->list, &copy);
+VectorElement getElement(Vector *v, int idx) {
+    if (idx < 0 || (size_t)idx >= v->size) {
+        fprintf(stderr, "Index out of bounds\n");
+        exit(EXIT_FAILURE);
+    }
+    return v->data[idx];
 }

@@ -1,16 +1,23 @@
 #include "List.h"
 #include "BasicTypes.h"
 #include "Memory.h"
+#include "Vector.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void createList(ListPtr list, const size_t sizeOfElement) {
+ListPtr createList(const size_t sizeOfElement) {
+  ListPtr list = newAlloc(sizeof(List));
+  if (!list) {
+    perror("Failed to allocate list");
+    exit(EXIT_FAILURE);
+  }
   list->data = NULL;
   list->size = 0;
   list->elementSize = sizeOfElement;
   list->capacity = 0;
+  return list;
 }
 
 void printList(List *list) {
@@ -19,6 +26,12 @@ void printList(List *list) {
   loopI(list->size) { printf(" %d,", ((int *)(newList->data))[i]); }
   printf("}");
   newline
+}
+void *valueAt(List *list, int idx) {
+  if (idx < 0 || (size_t)idx >= list->size) {
+    return NULL;
+  }
+  return (char *)list->data + idx * list->elementSize;
 }
 
 void appendList(List *list, const void *value) {

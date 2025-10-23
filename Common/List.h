@@ -1,4 +1,5 @@
 #pragma once
+#include "Vector.h"
 #include <stddef.h>
 typedef struct List {
   void *data;
@@ -8,6 +9,7 @@ typedef struct List {
 } List;
 typedef List *ListPtr;
 
-void createList(ListPtr list, const size_t sizeOfElement);
+ListPtr createList(const size_t sizeOfElement);
 void printList(List *list);
 void appendList(List *list, const void *value);
+void *valueAt(List *list, int idx);

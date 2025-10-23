@@ -1,30 +1,45 @@
 #pragma once
-#include "List.h"
+#include <stddef.h>
 
-/* -------- IntList -------- */
-typedef struct IntList {
-  List list;
-  int (*dataAt)(struct IntList *, int);
-} IntList;
+/* -------- Type Enum -------- */
+typedef enum {
+    TYPE_INT,
+    TYPE_DOUBLE,
+    TYPE_STRING
+} ValueType;
 
-IntList *createIntList(void);
-void appendInt(IntList *, int);
+/* -------- Union for data -------- */
+typedef union {
+    int i;
+    double d;
+    char *s;
+} ValueData;
 
-/* -------- DoubleList -------- */
-typedef struct DoubleList {
-  List list;
-  double (*dataAt)(struct DoubleList *, int);
-} DoubleList;
+/* -------- Vector element -------- */
+typedef struct {
+    ValueType type;
+    ValueData data;
+} VectorElement;
 
-DoubleList *createDoubleList(void);
-void appendDouble(DoubleList *, double);
+/* -------- Vector -------- */
+typedef struct {
+    VectorElement *data;
+    size_t size;
+    size_t capacity;
+} Vector;
 
-/* -------- StringList -------- */
-typedef struct StringList {
-  List list;
-  char *(*dataAt)(struct StringList *, int);
-} StringList;
+/* -------- Vector functions -------- */
 
-StringList *createStringList(void);
-void appendString(StringList *, const char *);
-void destroyStringList(StringList *);
+/* Create a new vector */
+Vector *createVector(void);
+
+/* Append different types */
+void appendInt(Vector *v, int val);
+void appendDouble(Vector *v, double val);
+void appendString(Vector *v, const char *val);
+
+/* Get element at index */
+VectorElement getElement(Vector *v, int idx);
+
+/* Free memory used by vector (including strings) */
+void destroyVector(Vector *v);
