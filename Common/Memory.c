@@ -1,4 +1,5 @@
 #include "BasicTypes.h"
+#include "Thread.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,6 +62,7 @@ void *newReAlloc(void *ptr, const size_t size) {
 }
 
 void destruct() {
+  destructThreadHandles();
   printf("Freeing allocated pointers. Total pointers freed = %d", pointersToFreeCount);
   for (int i = 0; i < pointersToFreeCount; i++) {
     free(pointersToFree[i]);

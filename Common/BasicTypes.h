@@ -6,7 +6,7 @@ typedef char *string;
 typedef unsigned int uint;
 typedef uint sizeT;
 typedef unsigned long int uint64;
-typedef int boolean;
+typedef int Boolean;
 
 // Easy loop for the for loop
 
