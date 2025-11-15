@@ -21,7 +21,7 @@ typedef struct {
     range social;
 } Marks;
 
-string checkPass(boolean pass) {
+string checkPass(Boolean pass) {
     return pass ? "passed" : "failed";
 }
 
@@ -37,12 +37,12 @@ Marks createMarks(const string name, double maths, double science, double social
     return new;
 }
 
-void printMarks(ListPtr list) {
+void printMarks(List list) {
     char name[100];
     printf("Enter the student name: ");
     scanf_s("%99s", name, (unsigned)_countof(name));
 
-    boolean found = false;
+    Boolean found = false;
     Marks stud;
 
     for (size_t i = 0; i < list->size; i++) {
@@ -68,7 +68,7 @@ void printMarks(ListPtr list) {
     printf("Social result  : %s\n", stud.social.PASS);
 }
 
-void createStudents(ListPtr students) {
+void createStudents(List students) {
     char name[100];
     double maths, science, social;
 
@@ -90,8 +90,8 @@ void createStudents(ListPtr students) {
 }
 
 int main() {
-    boolean loop = true;
-    ListPtr students = createList(sizeof(Marks));
+    Boolean loop = true;
+    List students = createList(sizeof(Marks));
 
     while (loop) {
         int option = 0;

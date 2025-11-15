@@ -63,9 +63,12 @@ void *newReAlloc(void *ptr, const size_t size) {
 
 void destruct() {
   destructThreadHandles();
-  printf("Freeing allocated pointers. Total pointers freed = %d", pointersToFreeCount);
+  newline;
+  printf("Freeing allocated pointers. Total pointers freed = %lld",
+         pointersToFreeCount);
   for (int i = 0; i < pointersToFreeCount; i++) {
-    free(pointersToFree[i]);
+    if (pointersToFree[i] != NULL)
+      free(pointersToFree[i]);
   }
   free(pointersToFree); // free the tracking array itself
   pointersToFree = NULL;
