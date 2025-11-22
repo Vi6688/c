@@ -4,14 +4,14 @@
 typedef enum { LOW = 0, MID = 1, HIGH = 2 } Priority;
 
 typedef enum {
-  NO_ERROR = 0, // No error
-  INVALID_ID,   // Process ID is invalid
-  QUEUE_FULL,   // Cannot add process to queue
-  QUEUE_EMPTY,  // Cannot remove process from queue
-  FAILED,       // function returned with an error
-  MEMORY_ERROR, // Allocation failed
+  ERROR_NONE = 0, // No error
+  INVALID_ID,     // Process ID is invalid
+  QUEUE_FULL,     // Cannot add process to queue
+  QUEUE_EMPTY,    // Cannot remove process from queue
+  FAILED,         // function returned with an error
+  MEMORY_ERROR,   // Allocation failed
   TIMEOUT
-} Error;
+} ErrorType;
 
 typedef enum {
   NEW = 0,   // Process just created
@@ -26,7 +26,7 @@ typedef struct {
   Time end;
   Time timeTaken;
   Status status;
-  Error error;
+  ErrorType error;
 } *ProcessDetails;
 
 typedef struct {
@@ -39,6 +39,8 @@ typedef struct {
   int (*func)(void *args);
 } *Process;
 
-void runTasks();
+#include <windows.h>
+DWORD WINAPI runTasks(LPVOID args);
 Boolean scheduleTask(string name, int (*func)(void *args), void *args,
                      Priority priority, Boolean loop);
+void stopTask(int processId);

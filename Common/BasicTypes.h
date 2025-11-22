@@ -10,7 +10,6 @@ typedef int Boolean;
 typedef long long Time;
 typedef void *voidPtr;
 typedef voidPtr Mutex;
-typedef unsigned long ThreadFunc;
 #define funcPtr void(*func)
 
 // Easy loop for the for loop
@@ -27,6 +26,6 @@ typedef unsigned long ThreadFunc;
 #define printl(VALUE)                                                          \
   {                                                                            \
     printf(VALUE);                                                             \
-    newline;                                                                   \
+    newline                                                                    \
   }
 #define PI 3.14
